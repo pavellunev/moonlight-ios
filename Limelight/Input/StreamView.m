@@ -15,6 +15,8 @@
 #import "AbsoluteTouchHandler.h"
 #import "KeyboardInputField.h"
 
+@import AVFoundation;
+
 static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
 
 @implementation StreamView {
@@ -174,6 +176,27 @@ static const double X1_MOUSE_SPEED_DIVISOR = 2.5;
     else {
         return [onScreenControls getLevel];
     }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    // Keep the video and on-screen controls in step with the view's size,
+    // which changes during a stream when iPhone Duo is folded or unfolded.
+    CGSize videoSize = [self getVideoAreaSize];
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    for (CALayer* layer in self.layer.sublayers) {
+        if ([layer isKindOfClass:[AVSampleBufferDisplayLayer class]]) {
+            layer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+            layer.bounds = CGRectMake(0, 0, videoSize.width, videoSize.height);
+        }
+    }
+    [CATransaction commit];
+    
+#if !TARGET_OS_TV
+    [onScreenControls viewSizeDidChange];
+#endif
 }
 
 - (CGSize) getVideoAreaSize {

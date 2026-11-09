@@ -12,6 +12,9 @@
 
 #import <UIKit/UIKit.h>
 
+// Posted on the main queue after the stream screen has been dismissed
+extern NSString* const MLStreamDidEndNotification;
+
 #if TARGET_OS_TV
 @import GameController;
 

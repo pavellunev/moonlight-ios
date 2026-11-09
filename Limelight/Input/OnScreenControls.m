@@ -121,18 +121,7 @@ static float L3_Y;
     _swapABXY = streamConfig.swapABXYButtons;
     
     _iPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
-    _controlArea = CGRectMake(0, 0, _view.frame.size.width, _view.frame.size.height);
-    if (_iPad)
-    {
-        // Cut down the control area on an iPad so the controls are more reachable
-        _controlArea.size.height = _view.frame.size.height / 2.0;
-        _controlArea.origin.y = _view.frame.size.height - _controlArea.size.height;
-    }
-    else
-    {
-        _controlArea.origin.x = _controlArea.size.width * EDGE_WIDTH;
-        _controlArea.size.width -= _controlArea.origin.x * 2;
-    }
+    [self updateControlArea];
     
     _aButton = [CALayer layer];
     _bButton = [CALayer layer];
@@ -156,6 +145,35 @@ static float L3_Y;
     _rightStick = [CALayer layer];
     
     return self;
+}
+
+- (void) updateControlArea {
+    _controlArea = CGRectMake(0, 0, _view.frame.size.width, _view.frame.size.height);
+    if (_iPad)
+    {
+        // Cut down the control area on an iPad so the controls are more reachable
+        _controlArea.size.height = _view.frame.size.height / 2.0;
+        _controlArea.origin.y = _view.frame.size.height - _controlArea.size.height;
+    }
+    else
+    {
+        _controlArea.origin.x = _controlArea.size.width * EDGE_WIDTH;
+        _controlArea.size.width -= _controlArea.origin.x * 2;
+    }
+}
+
+- (void) viewSizeDidChange {
+    CGRect oldControlArea = _controlArea;
+    [self updateControlArea];
+    
+    // Move the controls when the view changes size, such as when folding
+    // or unfolding iPhone Duo during a stream
+    if (_visible && !CGRectEqualToRect(oldControlArea, _controlArea)) {
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        [self updateControls];
+        [CATransaction commit];
+    }
 }
 
 - (void) show {

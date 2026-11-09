@@ -30,6 +30,8 @@
 - (id)initWithRefreshRate:(float)arg1 videoDynamicRange:(int)arg2;
 @end
 
+NSString* const MLStreamDidEndNotification = @"MLStreamDidEndNotification";
+
 @implementation StreamFrameViewController {
     ControllerSupport *_controllerSupport;
     StreamManager *_streamMan;
@@ -43,6 +45,12 @@
     UILabel *_stageLabel;
     UILabel *_tipLabel;
     UIActivityIndicatorView *_spinner;
+    BOOL _streamCleanedUp;
+#if !TARGET_OS_TV
+    UIVisualEffectView *_stageCard;
+    UIVisualEffectView *_tipCard;
+    UIVisualEffectView *_overlayGlass;
+#endif
     StreamView *_streamView;
     UIScrollView *_scrollView;
     BOOL _userIsInteracting;
@@ -56,10 +64,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-#if !TARGET_OS_TV
-    [[self revealViewController] setPrimaryViewController:self];
-#endif
 }
 
 #if TARGET_OS_TV
@@ -82,6 +86,11 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [UIApplication sharedApplication].idleTimerDisabled = YES;
+    
+#if !TARGET_OS_TV
+    // The stream screen is presented by the SwiftUI interface and has no storyboard
+    self.view.backgroundColor = [UIColor colorWithWhite:0.08 alpha:1.0];
+#endif
     
     _settings = [[[DataManager alloc] init] getSettings];
     
@@ -206,9 +215,101 @@
         [self.view addSubview:_streamView];
     }
     
+    // Follow the size of the window, which changes during a stream
+    // when iPhone Duo is folded or unfolded
+    UIViewAutoresizing flexibleSize = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    UIViewAutoresizing flexibleMargins = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+                                         UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    _streamView.autoresizingMask = flexibleSize;
+    _scrollView.autoresizingMask = flexibleSize;
+    
+#if TARGET_OS_TV
+    _stageLabel.autoresizingMask = flexibleMargins;
+    _spinner.autoresizingMask = flexibleMargins;
+    _tipLabel.autoresizingMask = flexibleMargins;
+    
     [self.view addSubview:_stageLabel];
     [self.view addSubview:_spinner];
     [self.view addSubview:_tipLabel];
+#else
+    [self installGlassStageViews];
+#endif
+}
+
+#if !TARGET_OS_TV
+- (UIVisualEffectView*)makeGlassViewWithRadius:(CGFloat)radius {
+    UIVisualEffectView* glassView = [[UIVisualEffectView alloc] initWithEffect:[[UIGlassEffect alloc] init]];
+    glassView.cornerConfiguration = [UICornerConfiguration configurationWithUniformRadius:[UICornerRadius fixedRadius:radius]];
+    glassView.translatesAutoresizingMaskIntoConstraints = NO;
+    return glassView;
+}
+
+// The "Starting <app>..." card and the disconnect tip are glass elements centered
+// with Auto Layout, so they follow the window when iPhone Duo is folded or unfolded.
+- (void)installGlassStageViews {
+    _stageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _stageLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    _stageLabel.textColor = [UIColor labelColor];
+    _stageLabel.numberOfLines = 0;
+    
+    _spinner.translatesAutoresizingMaskIntoConstraints = NO;
+    _spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleLarge;
+    _spinner.color = [UIColor labelColor];
+    
+    UIStackView* stack = [[UIStackView alloc] initWithArrangedSubviews:@[_spinner, _stageLabel]];
+    stack.axis = UILayoutConstraintAxisVertical;
+    stack.alignment = UIStackViewAlignmentCenter;
+    stack.spacing = 14;
+    stack.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    _stageCard = [self makeGlassViewWithRadius:28];
+    _stageCard.userInteractionEnabled = NO;
+    [_stageCard.contentView addSubview:stack];
+    [self.view addSubview:_stageCard];
+    
+    _tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _tipLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    _tipLabel.textColor = [UIColor secondaryLabelColor];
+    _tipLabel.numberOfLines = 0;
+    
+    _tipCard = [self makeGlassViewWithRadius:18];
+    _tipCard.userInteractionEnabled = NO;
+    [_tipCard.contentView addSubview:_tipLabel];
+    [self.view addSubview:_tipCard];
+    
+    UILayoutGuide* safe = self.view.safeAreaLayoutGuide;
+    [NSLayoutConstraint activateConstraints:@[
+        [stack.topAnchor constraintEqualToAnchor:_stageCard.contentView.topAnchor constant:24],
+        [stack.bottomAnchor constraintEqualToAnchor:_stageCard.contentView.bottomAnchor constant:-24],
+        [stack.leadingAnchor constraintEqualToAnchor:_stageCard.contentView.leadingAnchor constant:32],
+        [stack.trailingAnchor constraintEqualToAnchor:_stageCard.contentView.trailingAnchor constant:-32],
+        [_stageCard.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [_stageCard.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+        [_stageCard.widthAnchor constraintLessThanOrEqualToAnchor:safe.widthAnchor constant:-48],
+        
+        [_tipLabel.topAnchor constraintEqualToAnchor:_tipCard.contentView.topAnchor constant:8],
+        [_tipLabel.bottomAnchor constraintEqualToAnchor:_tipCard.contentView.bottomAnchor constant:-8],
+        [_tipLabel.leadingAnchor constraintEqualToAnchor:_tipCard.contentView.leadingAnchor constant:16],
+        [_tipLabel.trailingAnchor constraintEqualToAnchor:_tipCard.contentView.trailingAnchor constant:-16],
+        [_tipCard.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+        [_tipCard.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-16],
+        [_tipCard.widthAnchor constraintLessThanOrEqualToAnchor:safe.widthAnchor constant:-48],
+    ]];
+}
+#endif
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    // A zoomed StreamView can't follow the scroll view's new size,
+    // so zoom out and size it to the new viewport.
+    if (_scrollView != nil) {
+        [_scrollView setZoomScale:1.0 animated:NO];
+        [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+            self->_streamView.frame = self->_scrollView.bounds;
+            self->_scrollView.contentSize = self->_scrollView.bounds.size;
+        }];
+    }
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
@@ -218,15 +319,24 @@
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     // Only cleanup when we're being destroyed
     if (parent == nil) {
-        [_controllerSupport cleanup];
-        [UIApplication sharedApplication].idleTimerDisabled = NO;
-        [_streamMan stopStream];
-        if (_inactivityTimer != nil) {
-            [_inactivityTimer invalidate];
-            _inactivityTimer = nil;
-        }
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self cleanupStream];
     }
+}
+
+- (void)cleanupStream {
+    if (_streamCleanedUp) {
+        return;
+    }
+    _streamCleanedUp = YES;
+    
+    [_controllerSupport cleanup];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+    [_streamMan stopStream];
+    if (_inactivityTimer != nil) {
+        [_inactivityTimer invalidate];
+        _inactivityTimer = nil;
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #if 0
@@ -276,21 +386,32 @@
             [_overlayView setTextAlignment:NSTextAlignmentCenter];
         }
         
+#if TARGET_OS_TV
         [_overlayView setTextColor:[UIColor lightGrayColor]];
         [_overlayView setBackgroundColor:[UIColor blackColor]];
-#if TARGET_OS_TV
         [_overlayView setFont:[UIFont systemFontOfSize:24]];
-#else
-        [_overlayView setFont:[UIFont systemFontOfSize:12]];
-#endif
         [_overlayView setAlpha:0.5];
         [self.view addSubview:_overlayView];
+#else
+        // The stats overlay is a glass panel
+        [_overlayView setTextColor:[UIColor labelColor]];
+        [_overlayView setBackgroundColor:[UIColor clearColor]];
+        [_overlayView setFont:[UIFont monospacedSystemFontOfSize:12 weight:UIFontWeightRegular]];
+        _overlayView.textContainerInset = UIEdgeInsetsMake(8, 8, 8, 8);
+        
+        _overlayGlass = [self makeGlassViewWithRadius:16];
+        _overlayGlass.translatesAutoresizingMaskIntoConstraints = YES;
+        _overlayGlass.userInteractionEnabled = NO;
+        [_overlayGlass.contentView addSubview:_overlayView];
+        [self.view addSubview:_overlayGlass];
+#endif
     }
     
     if (text != nil) {
         // We set our bounds to the maximum width in order to work around a bug where
         // sizeToFit interacts badly with the UITextView's line breaks, causing the
         // width to get smaller and smaller each time as more line breaks are inserted.
+#if TARGET_OS_TV
         [_overlayView setBounds:CGRectMake(self.view.frame.origin.x,
                                            _overlayView.frame.origin.y,
                                            self.view.frame.size.width,
@@ -299,9 +420,27 @@
         [_overlayView sizeToFit];
         [_overlayView setCenter:CGPointMake(self.view.frame.size.width / 2, _overlayView.frame.size.height / 2)];
         [_overlayView setHidden:NO];
+#else
+        [_overlayView setFrame:CGRectMake(0, 0, self.view.frame.size.width, _overlayView.frame.size.height)];
+        [_overlayView setText:text];
+        [_overlayView sizeToFit];
+        
+        UIEdgeInsets safe = self.view.safeAreaInsets;
+        CGSize panelSize = _overlayView.frame.size;
+        BOOL isStats = _statsUpdateTimer != nil;
+        CGFloat x = isStats ? safe.left + 12 : (self.view.bounds.size.width - panelSize.width) / 2;
+        _overlayGlass.frame = CGRectMake(x, safe.top + 12, panelSize.width, panelSize.height);
+        _overlayGlass.autoresizingMask = isStats ? (UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin)
+                                                 : (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin);
+        [_overlayGlass setHidden:NO];
+#endif
     }
     else {
+#if TARGET_OS_TV
         [_overlayView setHidden:YES];
+#else
+        [_overlayGlass setHidden:YES];
+#endif
     }
 }
 
@@ -312,7 +451,19 @@
     [_statsUpdateTimer invalidate];
     _statsUpdateTimer = nil;
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    UINavigationController* navigationController = self.navigationController;
+    if (navigationController.presentingViewController != nil) {
+        // Presented modally by the SwiftUI interface. Dismissing doesn't remove
+        // us from the navigation controller, so willMoveToParentViewController:
+        // won't run; stop the stream here.
+        [self cleanupStream];
+        [navigationController.presentingViewController dismissViewControllerAnimated:YES completion:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:MLStreamDidEndNotification object:nil];
+        }];
+    }
+    else {
+        [navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 // This will fire if the user opens control center or gets a low battery message
@@ -374,6 +525,9 @@
         // the first frame of video.
         self->_stageLabel.hidden = YES;
         self->_tipLabel.hidden = YES;
+#if !TARGET_OS_TV
+        self->_tipCard.hidden = YES;
+#endif
         
         [self->_streamView showOnScreenControls];
         
@@ -476,8 +630,10 @@
         NSString* lowerCase = [NSString stringWithFormat:@"%s in progress...", stageName];
         NSString* titleCase = [[[lowerCase substringToIndex:1] uppercaseString] stringByAppendingString:[lowerCase substringFromIndex:1]];
         [self->_stageLabel setText:titleCase];
+#if TARGET_OS_TV
         [self->_stageLabel sizeToFit];
         self->_stageLabel.center = CGPointMake(self.view.frame.size.width / 2, self->_stageLabel.center.y);
+#endif
     });
 }
 
@@ -622,6 +778,9 @@
 
 - (void) videoContentShown {
     [_spinner stopAnimating];
+#if !TARGET_OS_TV
+    _stageCard.hidden = YES;
+#endif
     [self.view setBackgroundColor:[UIColor blackColor]];
 }
 

@@ -6,9 +6,7 @@
 #import "SceneDelegate.h"
 #import "AppDelegate.h"
 
-#if !TARGET_OS_TV
 #import "Moonlight-Swift.h"
-#endif
 
 @implementation SceneDelegate
 
@@ -18,13 +16,8 @@
     }
 
     self.window = [[UIWindow alloc] initWithWindowScene:(UIWindowScene*)scene];
-#if TARGET_OS_TV
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    self.window.rootViewController = [storyboard instantiateInitialViewController];
-#else
-    // The iOS interface is SwiftUI (see Limelight/SwiftUI)
+    // The interface is SwiftUI (see Limelight/SwiftUI)
     self.window.rootViewController = [MLRootFactory makeRootViewController];
-#endif
 
     // Code that predates scenes reaches the window through the app delegate
     AppDelegate* appDelegate = (AppDelegate*)UIApplication.sharedApplication.delegate;

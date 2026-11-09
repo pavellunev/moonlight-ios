@@ -229,9 +229,10 @@ final class SettingsModel {
     }
 
     func updateBitrate() {
-        let fps = framerate
-        let res = chosenResolution
+        bitrate = Self.autoBitrate(fps: framerate, width: chosenResolution.width, height: chosenResolution.height)
+    }
 
+    nonisolated static func autoBitrate(fps: Int, width: Int, height: Int) -> Int {
         // This logic is shamelessly stolen from Moonlight Qt:
         // https://github.com/moonlight-stream/moonlight-qt/blob/master/app/settings/streamingpreferences.cpp
 
@@ -250,7 +251,7 @@ final class SettingsModel {
 
         // Calculate the resolution factor by linear interpolation of the resolution table
         var resolutionFactor: Float = Float(resTable[resTable.count - 1].factor)
-        let pixels = res.width * res.height
+        let pixels = width * height
         for i in 0..<resTable.count {
             if pixels == resTable[i].pixels {
                 // We can bail immediately for exact matches
@@ -273,7 +274,7 @@ final class SettingsModel {
 
         let defaultBitrate = Int((resolutionFactor * frameRateFactor).rounded()) * 1000
         // Like the original, the computed value isn't snapped to a slider notch (only the slider position is)
-        bitrate = min(defaultBitrate, 100000)
+        return min(defaultBitrate, 100000)
     }
 
     // MARK: Persistence

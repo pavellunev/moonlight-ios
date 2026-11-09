@@ -226,6 +226,7 @@ final class HostStore {
     }
 
     private func updateHostShortcuts() {
+        #if os(iOS)
         var quickActions: [UIApplicationShortcutItem] = []
         for host in hostList {
             // Pair state may be unknown if we haven't polled it yet, but the app list
@@ -240,6 +241,7 @@ final class HostStore {
             }
         }
         UIApplication.shared.shortcutItems = quickActions
+        #endif
     }
 
     // MARK: Lifecycle
@@ -292,6 +294,7 @@ final class HostStore {
     }
 
     private func handlePendingShortcutAction() {
+        #if os(iOS)
         guard let delegate = UIApplication.shared.delegate as? AppDelegate,
               let uuid = delegate.pcUuidToLoad else { return }
 
@@ -311,6 +314,7 @@ final class HostStore {
             // Navigate to the host page
             hostClicked(matchingHost, userInitiated: false)
         }
+        #endif
     }
 
     // MARK: Selection
@@ -666,15 +670,19 @@ final class HostStore {
             actions.append(.wake)
         } else if host.pairing == .paired {
             actions.append(.viewAllApps)
+            #if os(iOS)
             if host.isNvidiaServerSoftware {
                 actions.append(.gameStreamEndOfService)
             }
+            #endif
         }
         actions.append(.testNetwork)
+        #if os(iOS)
         if host.connection != .online {
             actions.append(.gameStreamEndOfService)
             actions.append(.connectionHelp)
         }
+        #endif
         actions.append(.remove)
         return actions
     }
@@ -697,10 +705,14 @@ final class HostStore {
             hostClicked(host, userInitiated: true)
 
         case .gameStreamEndOfService:
+            #if os(iOS)
             Utils.launchUrl(HelpURL.gameStreamEndOfService)
+            #endif
 
         case .connectionHelp:
+            #if os(iOS)
             Utils.launchUrl(HelpURL.troubleshooting)
+            #endif
 
         case .testNetwork:
             testNetwork()
@@ -922,6 +934,8 @@ final class HostStore {
     }
 
     func openHelp() {
+        #if os(iOS)
         Utils.launchUrl(HelpURL.troubleshooting)
+        #endif
     }
 }

@@ -8,14 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		0357AC2186A24C730A31CEFF /* StreamLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556A8315729AC54240CF7CB /* StreamLauncher.swift */; };
+		0C3E52E3349D1A32C56B0D89 /* TVSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93D02E7B516E0C5029FCEA9 /* TVSettingsView.swift */; };
+		133678D54F69C461B0D48948 /* TVRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89B1011FEBA8DB46E592B59 /* TVRootView.swift */; };
+		1558F65723A3467A9AC66C5C /* HostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE7E530AF34F11B26B204DD /* HostStore.swift */; };
 		284CADA6B21C0D973DE81CE4 /* HostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5953EFAFF2C5907D306232 /* HostModels.swift */; };
 		3951C2850E72E811FDA5ED9F /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2897B6920E9CC3B9D04C9E1D /* SceneDelegate.m */; };
+		42B2FCF5495097C20A06F3AF /* HostModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5953EFAFF2C5907D306232 /* HostModels.swift */; };
 		4A2C2C183A4BDBE785C83E69 /* AppLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBEE9AA7D15160E9BBFCAD6 /* AppLibraryView.swift */; };
 		62AF5606C3F4548613B5E5E0 /* StreamControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF4BBCDD30D654750D75DC7 /* StreamControllerFactory.m */; };
 		693B3A9B218638CD00982F7B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 693B3A9A218638CD00982F7B /* Settings.bundle */; };
 		72E0D207B869B312816008A2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D5F1F8124B54BF95221A6 /* SettingsView.swift */; };
 		76577272FCB75A2837DD432D /* HostStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE7E530AF34F11B26B204DD /* HostStore.swift */; };
+		7A1D5F68611369A4EC3A27E0 /* TVAddHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D3AFEA025E5146AB27745D /* TVAddHostView.swift */; };
 		7AEA835C808C6991A3B4F8A8 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7391F63A2BAEDE700E22179 /* SettingsModel.swift */; };
+		8E87AF8632E341049C5B0B21 /* TVPairingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1316ABAB521B0519C21B3FC /* TVPairingView.swift */; };
 		98181BE92791277400E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BE82791275D00E43572 /* libSDL2.a */; };
 		98181BEB2791278F00E43572 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEA2791278300E43572 /* libSDL2.a */; };
 		98181BED2791281100E43572 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98181BEC2791281100E43572 /* CoreMotion.framework */; };
@@ -29,9 +35,7 @@
 		9865DC31213260F10005B9B9 /* mkcert.c in Sources */ = {isa = PBXBuildFile; fileRef = FB89460719F646E200339C8A /* mkcert.c */; };
 		9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB290D0319B2C406004C83CF /* AppDelegate.m */; };
 		9865DC37213287FE0005B9B9 /* StreamFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462719F646E200339C8A /* StreamFrameViewController.m */; };
-		9865DC38213287FE0005B9B9 /* LoadingFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4A23B71A9D3637004D2EF2 /* LoadingFrameViewController.m */; };
 		9865DC3C2132922E0005B9B9 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9865DC3B2132922E0005B9B9 /* GameController.framework */; };
-		9865DC3E21332D660005B9B9 /* MainFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89462519F646E200339C8A /* MainFrameViewController.m */; };
 		98882A062AF60F7000C5A11C /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A032AF60F5300C5A11C /* libavcodec.a */; };
 		98882A072AF60F7200C5A11C /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A052AF60F5300C5A11C /* libavformat.a */; };
 		98882A082AF60F7400C5A11C /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98882A042AF60F5300C5A11C /* libavutil.a */; };
@@ -49,16 +53,21 @@
 		98CFB82F1CAD481B0048EF74 /* libmoonlight-common.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98AB2E841CAD46840089BB98 /* libmoonlight-common.a */; };
 		98D5856D1C0EA79600F6CC00 /* TemporaryHost.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D5856C1C0EA79600F6CC00 /* TemporaryHost.m */; };
 		98D585701C0ED0E800F6CC00 /* TemporarySettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D5856F1C0ED0E800F6CC00 /* TemporarySettings.m */; };
+		9C84A2A330005AC4618C4DF8 /* TVHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD9CAFF3BA687660FCA2A91 /* TVHomeView.swift */; };
 		9D34D9D4EAB14A0BC447899C /* ComputerSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C76192111556D0700F11E57 /* ComputerSidebar.swift */; };
+		A4AD6513130C746098E24DA1 /* TVAppLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2219DD235C30ACF64C033ADE /* TVAppLibrary.swift */; };
 		B04567ABEA411662F1BFB101 /* PairingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A916BD5DDBA39070D718669 /* PairingView.swift */; };
 		C3856411E306CC74054A3B97 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2897B6920E9CC3B9D04C9E1D /* SceneDelegate.m */; };
 		D5E59857B8D838E5E1CE0A5C /* AddHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 556013CC5F8C631DEBD9D5A3 /* AddHostView.swift */; };
 		D9FF7889EC6512AA9A458781 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADB39B85CE32BB016C6A6FA /* RootView.swift */; };
 		DC1F5A07206436B20037755F /* ConnectionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1F5A06206436B20037755F /* ConnectionHelper.m */; };
+		DE54236676BAD13E24014608 /* TVSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED88BC4E9A8C12A763114E5D /* TVSettingsModel.swift */; };
+		E0C6F357F71AF61A8F110274 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7391F63A2BAEDE700E22179 /* SettingsModel.swift */; };
+		E0F1F8194F8F14520952F46A /* StreamControllerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCF4BBCDD30D654750D75DC7 /* StreamControllerFactory.m */; };
+		F674ADCEA63B967B86489DF3 /* StreamLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556A8315729AC54240CF7CB /* StreamLauncher.swift */; };
 		F74BEF9C2C1A705600224667 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = F74BEF9B2C1A705600224667 /* OpenSSL */; };
 		F74BEFA42C1A80E400224667 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = F74BEFA32C1A80E400224667 /* OpenSSL */; };
 		FB1A674D2131E65900507771 /* KeyboardSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A674C2131E65900507771 /* KeyboardSupport.m */; };
-		FB1A67602132419700507771 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB1A675E2132419700507771 /* Main.storyboard */; };
 		FB1A67622132419A00507771 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB1A67612132419A00507771 /* Assets.xcassets */; };
 		FB1A67A12132458C00507771 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1A67642132419A00507771 /* main.m */; };
 		FB1A67A3213245BD00507771 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = FB89461719F646E200339C8A /* Connection.m */; };
@@ -95,10 +104,6 @@
 		FB1A67E521324A1F00507771 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB1A67E421324A1F00507771 /* CoreData.framework */; };
 		FB1A67E821324DE300507771 /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB8946EA19F6AFB800339C8A /* libopus.a */; };
 		FB1A67EA21324DF300507771 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FB1A67E921324DF300507771 /* libxml2.tbd */; };
-		FB1A6819213284FB00507771 /* UIComputerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBDE86DF19F7A837001C18A8 /* UIComputerView.m */; };
-		FB1A681A213284FB00507771 /* UIAppView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBDE86E519F82297001C18A8 /* UIAppView.m */; };
-		FB1A681B213284FB00507771 /* ComputerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D59961BBCCB6400F482CA /* ComputerScrollView.m */; };
-		FB1A681C213284FB00507771 /* AppCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D59991BBCCD7E00F482CA /* AppCollectionView.m */; };
 		FB1A681E21328A1B00507771 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB290D0819B2C406004C83CF /* Images.xcassets */; };
 		FB1D59971BBCCB6400F482CA /* ComputerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D59961BBCCB6400F482CA /* ComputerScrollView.m */; };
 		FB1D599A1BBCCD7E00F482CA /* AppCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB1D59991BBCCD7E00F482CA /* AppCollectionView.m */; };
@@ -179,6 +184,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2219DD235C30ACF64C033ADE /* TVAppLibrary.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVAppLibrary.swift; sourceTree = "<group>"; };
 		2897B6920E9CC3B9D04C9E1D /* SceneDelegate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		3FE7E530AF34F11B26B204DD /* HostStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostStore.swift; sourceTree = "<group>"; };
 		5556A8315729AC54240CF7CB /* StreamLauncher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StreamLauncher.swift; sourceTree = "<group>"; };
@@ -230,13 +236,19 @@
 		98D5856F1C0ED0E800F6CC00 /* TemporarySettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TemporarySettings.m; path = Database/TemporarySettings.m; sourceTree = "<group>"; };
 		9C76192111556D0700F11E57 /* ComputerSidebar.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ComputerSidebar.swift; sourceTree = "<group>"; };
 		9E5953EFAFF2C5907D306232 /* HostModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HostModels.swift; sourceTree = "<group>"; };
+		A1316ABAB521B0519C21B3FC /* TVPairingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVPairingView.swift; sourceTree = "<group>"; };
 		B50D5F1F8124B54BF95221A6 /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B89B1011FEBA8DB46E592B59 /* TVRootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVRootView.swift; sourceTree = "<group>"; };
+		C6D3AFEA025E5146AB27745D /* TVAddHostView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVAddHostView.swift; sourceTree = "<group>"; };
 		C7391F63A2BAEDE700E22179 /* SettingsModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		C93D02E7B516E0C5029FCEA9 /* TVSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVSettingsView.swift; sourceTree = "<group>"; };
+		CBD9CAFF3BA687660FCA2A91 /* TVHomeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVHomeView.swift; sourceTree = "<group>"; };
 		CD4B41D897B9122CD0205050 /* SceneDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		D4746EEA1CBC740C006FB401 /* Moonlight-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Moonlight-Bridging-Header.h"; path = "Input/Moonlight-Bridging-Header.h"; sourceTree = "<group>"; };
 		DC1F5A05206436B10037755F /* ConnectionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionHelper.h; sourceTree = "<group>"; };
 		DC1F5A06206436B20037755F /* ConnectionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionHelper.m; sourceTree = "<group>"; };
 		EADB39B85CE32BB016C6A6FA /* RootView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		ED88BC4E9A8C12A763114E5D /* TVSettingsModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TVSettingsModel.swift; sourceTree = "<group>"; };
 		FB1A674B2131E65900507771 /* KeyboardSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardSupport.h; sourceTree = "<group>"; };
 		FB1A674C2131E65900507771 /* KeyboardSupport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardSupport.m; sourceTree = "<group>"; };
 		FB1A67532132419700507771 /* Moonlight TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Moonlight TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -420,9 +432,25 @@
 				5556A8315729AC54240CF7CB /* StreamLauncher.swift */,
 				5B04593EF38587CE0F8B08BE /* StreamControllerFactory.h */,
 				FCF4BBCDD30D654750D75DC7 /* StreamControllerFactory.m */,
+				E8B19BB3E29E597132CC2B97 /* tvOS */,
 			);
 			name = SwiftUI;
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		E8B19BB3E29E597132CC2B97 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				B89B1011FEBA8DB46E592B59 /* TVRootView.swift */,
+				CBD9CAFF3BA687660FCA2A91 /* TVHomeView.swift */,
+				2219DD235C30ACF64C033ADE /* TVAppLibrary.swift */,
+				C6D3AFEA025E5146AB27745D /* TVAddHostView.swift */,
+				A1316ABAB521B0519C21B3FC /* TVPairingView.swift */,
+				C93D02E7B516E0C5029FCEA9 /* TVSettingsView.swift */,
+				ED88BC4E9A8C12A763114E5D /* TVSettingsModel.swift */,
+			);
+			name = tvOS;
+			path = tvOS;
 			sourceTree = "<group>";
 		};
 		FB1A67542132419700507771 /* Moonlight TV */ = {
@@ -855,7 +883,6 @@
 				693B3A9B218638CD00982F7B /* Settings.bundle in Resources */,
 				FB1A681E21328A1B00507771 /* Images.xcassets in Resources */,
 				FB1A67622132419A00507771 /* Assets.xcassets in Resources */,
-				FB1A67602132419700507771 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -878,14 +905,8 @@
 			files = (
 				9827E7A42514366900F25707 /* HapticContext.m in Sources */,
 				9897B6A62212732C00966419 /* Controller.m in Sources */,
-				9865DC3E21332D660005B9B9 /* MainFrameViewController.m in Sources */,
 				9865DC36213287F30005B9B9 /* AppDelegate.m in Sources */,
-				FB1A6819213284FB00507771 /* UIComputerView.m in Sources */,
-				FB1A681A213284FB00507771 /* UIAppView.m in Sources */,
-				FB1A681B213284FB00507771 /* ComputerScrollView.m in Sources */,
-				FB1A681C213284FB00507771 /* AppCollectionView.m in Sources */,
 				9865DC37213287FE0005B9B9 /* StreamFrameViewController.m in Sources */,
-				9865DC38213287FE0005B9B9 /* LoadingFrameViewController.m in Sources */,
 				9865DC31213260F10005B9B9 /* mkcert.c in Sources */,
 				FB1A67E32132498A00507771 /* Limelight.xcdatamodeld in Sources */,
 				FB1A67DE2132460A00507771 /* Utils.m in Sources */,
@@ -923,6 +944,18 @@
 				FB1A67A9213245BD00507771 /* VideoDecoderRenderer.m in Sources */,
 				FB1A67A12132458C00507771 /* main.m in Sources */,
 				3951C2850E72E811FDA5ED9F /* SceneDelegate.m in Sources */,
+				42B2FCF5495097C20A06F3AF /* HostModels.swift in Sources */,
+				1558F65723A3467A9AC66C5C /* HostStore.swift in Sources */,
+				E0C6F357F71AF61A8F110274 /* SettingsModel.swift in Sources */,
+				F674ADCEA63B967B86489DF3 /* StreamLauncher.swift in Sources */,
+				E0F1F8194F8F14520952F46A /* StreamControllerFactory.m in Sources */,
+				133678D54F69C461B0D48948 /* TVRootView.swift in Sources */,
+				9C84A2A330005AC4618C4DF8 /* TVHomeView.swift in Sources */,
+				A4AD6513130C746098E24DA1 /* TVAppLibrary.swift in Sources */,
+				7A1D5F68611369A4EC3A27E0 /* TVAddHostView.swift in Sources */,
+				8E87AF8632E341049C5B0B21 /* TVPairingView.swift in Sources */,
+				0C3E52E3349D1A32C56B0D89 /* TVSettingsView.swift in Sources */,
+				DE54236676BAD13E24014608 /* TVSettingsModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1070,7 +1103,7 @@
 				);
 				MARKETING_VERSION = 9.0.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moonlight-stream.Moonlight";
+				PRODUCT_BUNDLE_IDENTIFIER = app.hostplay.stream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Limelight/Input/Moonlight-Bridging-Header.h";
@@ -1078,7 +1111,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				TVOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -1126,7 +1159,7 @@
 				);
 				MARKETING_VERSION = 9.0.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.moonlight-stream.Moonlight";
+				PRODUCT_BUNDLE_IDENTIFIER = app.hostplay.stream;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -1134,7 +1167,7 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "Moonlight-Swift.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_TVOS_DEPLOYMENT_TARGET)";
+				TVOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};

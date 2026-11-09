@@ -1,4 +1,5 @@
 import AVFoundation
+import Darwin
 import UIKit
 import VideoToolbox
 
@@ -35,6 +36,19 @@ enum StreamLauncher {
 
         config.height = streamSettings.height.int32Value
         config.width = streamSettings.width.int32Value
+        #if os(tvOS)
+        // Don't allow streaming 4K on the Apple TV HD
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machine = withUnsafeBytes(of: &systemInfo.machine) { raw in
+            String(cString: raw.bindMemory(to: CChar.self).baseAddress!)
+        }
+        if machine == "AppleTV5,3" && config.height >= 2160 {
+            NSLog("4K streaming not supported on Apple TV HD")
+            config.width = 1920
+            config.height = 1080
+        }
+        #endif
 
         config.bitRate = streamSettings.bitrate.int32Value
         config.optimizeGameSettings = streamSettings.optimizeGames
